@@ -9,8 +9,8 @@ package lex
 
 
 import (
-	"fmt"
 	"github.com/cznic/lexer"
+	"fmt"
 	"os"
 	"unicode"
 )
@@ -126,7 +126,12 @@ func (n *nfa) powerSet() (d *dfa) {
 					case *lexer.RangesEdge:
 						if !bits32 {
 							var m [256]bool
-							for _, r := range x.Ranges {
+							for _, r := range x.Ranges.R16 {
+								for c := r.Lo; c <= r.Hi; c += r.Stride {
+									m[c] = true
+								}
+							}
+							for _, r := range x.Ranges.R32 {
 								for c := r.Lo; c <= r.Hi; c += r.Stride {
 									m[c] = true
 								}
@@ -137,6 +142,8 @@ func (n *nfa) powerSet() (d *dfa) {
 								}
 							}
 						} else { // bits32
+							panic("unreachable")
+							/* mode32 disabled
 							r := rangeSlice(x.Ranges)
 							if x.Invert {
 								r.invert()
@@ -151,6 +158,7 @@ func (n *nfa) powerSet() (d *dfa) {
 									s(closures, c).closure(x.Target(), p)
 								}
 							}
+							*/
 						}
 					}
 				}
@@ -165,12 +173,12 @@ func (n *nfa) powerSet() (d *dfa) {
 				case 1:
 					state.AddConsuming(lexer.NewRuneEdge(s, slice[0]))
 				default:
-					r := []unicode.Range{}
+					r := []unicode.Range32{}
 					for _, char := range slice {
-						r = append(r, unicode.Range{char, char, 1})
+						r = append(r, unicode.Range32{uint32(char), uint32(char), 1})
 					}
 					(*rangeSlice)(&r).normalize()
-					state.AddConsuming(lexer.NewRangesEdge(s, false, r))
+					state.AddConsuming(lexer.NewRangesEdge(s, false, &unicode.RangeTable{R32: r}))
 				}
 			}
 		}

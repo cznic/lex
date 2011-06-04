@@ -75,8 +75,8 @@ package lex
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/cznic/lexer"
+	"fmt"
 	"go/token"
 	"io"
 	"os"
@@ -243,7 +243,12 @@ func (l *L) String() string {
 // Currently it is not reentrant and not invokable more than once in an application
 // (which is assumed tolerable for a "lex" tool).
 // The unoptdfa argument allows to disable optimization of the produced DFA.
+// The mode32 parameter is not yet supported and must be false.
 func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.Error) {
+	if mode32 {
+		return nil, os.NewError("lex.NewL: mode32 unsupported yet")
+	}
+
 	nodfaopt, bits32 = unoptdfa, mode32
 	l = &L{}
 
@@ -295,15 +300,15 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.
 				l.StartConditionsBolStates[edge.Rune-128] = edge.Target()
 			}
 		case *lexer.RangesEdge:
-			for _, rng := range edge.Ranges {
+			for _, rng := range edge.Ranges.R32 {
 				for rune := rng.Lo; rune <= rng.Hi; rune += rng.Stride {
-					if _, ok := l.StartConditionsStates[rune]; ok {
+					if _, ok := l.StartConditionsStates[int(rune)]; ok {
 						panic(os.NewError("internal error"))
 					}
 					if rune < 128 {
-						l.StartConditionsStates[rune] = edge.Target()
+						l.StartConditionsStates[int(rune)] = edge.Target()
 					} else {
-						l.StartConditionsBolStates[rune-128] = edge.Target()
+						l.StartConditionsBolStates[int(rune)-128] = edge.Target()
 					}
 				}
 			}

@@ -21,8 +21,8 @@ import (
 
 
 var (
-	nameFirst = []unicode.Range{{'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}
-	nameNext  = []unicode.Range{{'-', '-', 1}, {'0', '9', 1}, {'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}
+	nameFirst = &unicode.RangeTable{R16: []unicode.Range16{{'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}}
+	nameNext  = &unicode.RangeTable{R16: []unicode.Range16{{'-', '-', 1}, {'0', '9', 1}, {'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}}
 )
 
 

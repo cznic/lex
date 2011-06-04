@@ -14,7 +14,7 @@ import (
 )
 
 
-type rangeSlice []unicode.Range
+type rangeSlice []unicode.Range32
 
 
 // sort.Interface
@@ -91,15 +91,15 @@ func (pr *rangeSlice) invert() {
 	y := rangeSlice{}
 
 	if a := r[0].Lo; a > min {
-		y = append(y, unicode.Range{min, a - 1, 1})
+		y = append(y, unicode.Range32{min, a - 1, 1})
 	}
 
 	for i := 0; i < npairs-1; i++ {
-		y = append(y, unicode.Range{r[i].Hi + 1, r[i+1].Lo - 1, 1})
+		y = append(y, unicode.Range32{r[i].Hi + 1, r[i+1].Lo - 1, 1})
 	}
 
 	if z := r[npairs-1].Hi; z < max {
-		y = append(y, unicode.Range{z + 1, max, 1})
+		y = append(y, unicode.Range32{z + 1, max, 1})
 	}
 	*pr = y
 }
