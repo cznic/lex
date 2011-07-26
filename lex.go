@@ -4,7 +4,6 @@
 
 // blame: jnml, labs.nic.cz
 
-
 // Package lex provides support for a *nix (f)lex like tool on .l sources.
 // The syntax is similar to a subset of (f)lex, see also: http://flex.sourceforge.net/manual/Format.html#Format
 //
@@ -72,7 +71,6 @@
 //	- And probably more.
 package lex
 
-
 import (
 	"bytes"
 	"github.com/cznic/lexer"
@@ -83,14 +81,12 @@ import (
 	"strings"
 )
 
-
 type rule struct {
 	conds               []string
 	pattern, re, action string
 	in, bolIn           *lexer.NfaState
 	bol, eol            bool
 }
-
 
 var (
 	defs             = map[string]string{}
@@ -117,7 +113,6 @@ var (
 	bits32           bool // enables unicode rune processing, standard is byte
 )
 
-
 func logErr(s string) {
 	errors = append(errors, s)
 }
@@ -131,7 +126,6 @@ type Rule struct {
 	RE      string   // Pattern translated to a regular expression
 	Action  string   // Rule's associated action source code
 }
-
 
 // L represents selected data structures found in / generated from a .l source.
 // A [command line] tool using this package may then render L to some programming language source code
@@ -163,7 +157,6 @@ type L struct {
 	YYN string
 }
 
-
 // DfaString returns the textual representation of the Dfa field.
 func (l *L) DfaString() string {
 	buf := bytes.NewBuffer(nil)
@@ -183,7 +176,6 @@ func (l *L) DfaString() string {
 	}
 	return buf.String()
 }
-
 
 func (l *L) String() string {
 	buf := bytes.NewBuffer(nil)
@@ -237,7 +229,6 @@ func (l *L) String() string {
 
 	return buf.String()
 }
-
 
 // NewL parses a .l source fname from src, returns L or an os.Error if any.
 // Currently it is not reentrant and not invokable more than once in an application

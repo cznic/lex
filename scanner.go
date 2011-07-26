@@ -7,12 +7,10 @@
 
 package lex
 
-
 import (
 	"fmt"
 	"github.com/cznic/lexer"
 )
-
 
 func (t *tokenizer) Lex(lval *yySymType) (c int) {
 	c, ok := t.scanner.Scan()
@@ -24,23 +22,19 @@ func (t *tokenizer) Lex(lval *yySymType) (c int) {
 	return
 }
 
-
 func (t *tokenizer) Error(e string) {
 	println("Error:", fmt.Sprintf("%s:%q\n", t.scanner.Position(), e))
 	logErr(fmt.Sprintf("%s:%q\n", t.scanner.Position(), e))
 }
-
 
 type tokenizer struct {
 	scanner *lexer.Scanner
 	val     string
 }
 
-
 func newTokenizer(sc *lexer.Scanner) *tokenizer {
 	return &tokenizer{scanner: sc}
 }
-
 
 func sc(y yyLexer) *lexer.Scanner {
 	return y.(*tokenizer).scanner
@@ -56,9 +50,7 @@ const (
 	_USER
 )
 
-
 var lxr *lexer.Lexer
-
 
 func init() {
 	lxr = lexer.MustCompileLexer(

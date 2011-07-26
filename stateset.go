@@ -7,14 +7,12 @@
 
 package lex
 
-
 import (
-	"fmt"
 	"github.com/cznic/lexer"
+	"fmt"
 	"sort"
 	"strings"
 )
-
 
 type stateSet struct {
 	count  uint
@@ -22,40 +20,32 @@ type stateSet struct {
 	sparse []uint
 }
 
-
 type dense struct {
 	id       uint
 	priority int
 }
 
-
 type denses []dense
-
 
 func (d denses) Len() int {
 	return len(d)
 }
 
-
 func (d denses) Less(i, j int) bool {
 	return d[i].id < d[j].id
 }
-
 
 func (d denses) Swap(i, j int) {
 	d[i], d[j] = d[j], d[i]
 }
 
-
 func newStateSet(n int) *stateSet {
 	return &stateSet{0, make([]dense, n), make([]uint, n)}
 }
 
-
 func (s *stateSet) clear() {
 	s.count = 0
 }
-
 
 func (s *stateSet) has(state *lexer.NfaState, priority *int) bool {
 	id := state.Index
@@ -68,7 +58,6 @@ func (s *stateSet) has(state *lexer.NfaState, priority *int) bool {
 
 	return false
 }
-
 
 func (s *stateSet) include(state *lexer.NfaState, priority int) bool {
 	id := state.Index
@@ -88,7 +77,6 @@ func (s *stateSet) include(state *lexer.NfaState, priority int) bool {
 	return false
 }
 
-
 func (s *stateSet) closure(state *lexer.NfaState, priority int) *stateSet {
 	if !s.include(state, priority) {
 		for _, edge := range state.NonConsuming {
@@ -101,7 +89,6 @@ func (s *stateSet) closure(state *lexer.NfaState, priority int) *stateSet {
 	}
 	return s
 }
-
 
 func (s *stateSet) id() string {
 	d := make(denses, s.count)

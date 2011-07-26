@@ -7,7 +7,6 @@
 
 package lex
 
-
 import (
 	"bytes"
 	"fmt"
@@ -19,12 +18,10 @@ import (
 	"utf8"
 )
 
-
 var (
 	nameFirst = &unicode.RangeTable{R16: []unicode.Range16{{'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}}
 	nameNext  = &unicode.RangeTable{R16: []unicode.Range16{{'-', '-', 1}, {'0', '9', 1}, {'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}}
 )
-
 
 func parsePattern(pos token.Position, src string, stack map[string]bool) (pattern, re, action string, bol, eol bool) {
 	p := &pat{src: src, re: bytes.NewBuffer(nil), stack: stack}
@@ -50,7 +47,6 @@ func parsePattern(pos token.Position, src string, stack map[string]bool) (patter
 	panic(os.NewError("syntax error"))
 }
 
-
 type pat struct {
 	src      string
 	pos      int
@@ -59,7 +55,6 @@ type pat struct {
 	stack    map[string]bool
 	bol, eol bool
 }
-
 
 func (p *pat) current() (y int) {
 	if i := p.pos; i < len(p.src) {
@@ -74,12 +69,10 @@ func (p *pat) current() (y int) {
 	return 0
 }
 
-
 func (p *pat) eof(whiteIsEof bool) bool {
 	b := p.current()
 	return b == 0 || whiteIsEof && (b == ' ' || b == '\t')
 }
-
 
 func (p *pat) move() {
 	if p.pos < len(p.src) {
@@ -92,7 +85,6 @@ func (p *pat) move() {
 	return
 }
 
-
 func (p *pat) accept(b int) bool {
 	if b == p.current() {
 		p.move()
@@ -101,7 +93,6 @@ func (p *pat) accept(b int) bool {
 
 	return false
 }
-
 
 func (p *pat) parseExpr(nest int) {
 	ok := false
@@ -121,7 +112,6 @@ func (p *pat) parseExpr(nest int) {
 	panic(os.NewError(`expected "alernative"`))
 }
 
-
 func (p *pat) parseAlt(nest int) {
 	ok := false
 	for p.current() != 0 {
@@ -137,7 +127,6 @@ func (p *pat) parseAlt(nest int) {
 
 	panic(os.NewError(`expected "term"`))
 }
-
 
 func (p *pat) parseTerm(nest int) (ok bool) {
 	ok = true
@@ -287,7 +276,6 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 	return
 }
 
-
 func (p *pat) mustParseChar(whiteIsEof bool) (b int) {
 	if p.eof(whiteIsEof) {
 		panic(fmt.Errorf("unexpected regexp end"))
@@ -297,7 +285,6 @@ func (p *pat) mustParseChar(whiteIsEof bool) (b int) {
 	p.move()
 	return
 }
-
 
 func (p *pat) parseChar() (b int) {
 	if b = p.current(); b != '\\' {
@@ -389,13 +376,11 @@ func (p *pat) parseChar() (b int) {
 	panic("unreachable")
 }
 
-
 func (p *pat) expect(b int) {
 	if !p.accept(b) {
 		panic(fmt.Errorf("expected %q, got %q", string(b), string(p.current())))
 	}
 }
-
 
 func moreAction(s string) {
 	n := len(rules) - 1

@@ -7,7 +7,6 @@
 
 package lex
 
-
 import (
 	"github.com/cznic/lexer"
 	"fmt"
@@ -15,18 +14,15 @@ import (
 	"unicode"
 )
 
-
 var (
 	partialDFAs = []*dfa{nil}
 	allNfa      nfa
 )
 
-
 type nfa struct {
 	nfa     lexer.Nfa
 	in, out *lexer.NfaState
 }
-
 
 func (n *nfa) String() string {
 	var i, o string
@@ -39,13 +35,11 @@ func (n *nfa) String() string {
 	return fmt.Sprintf("in %s out %s\n%s", i, o, n.nfa.String())
 }
 
-
 type dfa struct {
 	nfa
 	accept     []*lexer.NfaState
 	acceptRule []int
 }
-
 
 func (d *dfa) String() (s string) {
 	s = "accept states list:"
@@ -54,7 +48,6 @@ func (d *dfa) String() (s string) {
 	}
 	return s + "\n" + d.nfa.String()
 }
-
 
 func (n *nfa) reverse() *nfa { // in place
 	cEdges, ncEdges := make([][]lexer.Edger, len(n.nfa)), make([][]lexer.Edger, len(n.nfa))
@@ -77,7 +70,6 @@ func (n *nfa) reverse() *nfa { // in place
 	n.in, n.out = n.out, n.in
 	return n
 }
-
 
 func (n *nfa) powerSet() (d *dfa) {
 	d = &dfa{}
@@ -189,7 +181,6 @@ func (n *nfa) powerSet() (d *dfa) {
 	return
 }
 
-
 func (d *dfa) toNfa() *nfa {
 	s := d.nfa.nfa.NewState()
 	d.nfa.out = s
@@ -198,7 +189,6 @@ func (d *dfa) toNfa() *nfa {
 	}
 	return &d.nfa
 }
-
 
 func computePartialDFAs() {
 	var err os.Error
@@ -219,7 +209,6 @@ func computePartialDFAs() {
 		}
 	}
 }
-
 
 func computeAllNfa() {
 	in, out := allNfa.nfa.NewState(), allNfa.nfa.NewState()

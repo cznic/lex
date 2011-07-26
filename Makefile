@@ -15,7 +15,7 @@ GOFILES=\
 	scanner.go\
 	stateset.go\
 
-CLEANFILES += y.output
+CLEANFILES +=  y.output *~
 
 include $(GOROOT)/src/Make.pkg
 
