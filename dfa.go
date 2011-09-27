@@ -243,7 +243,7 @@ func computeAllNfa() {
 
 		// len(conds) != 0
 		for _, sc := range conds {
-			if sc != "*" { // rule is active in all it's explicitly declared start conditions
+			if sc != "*" { // rule is active in all its explicitly declared start conditions
 				in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]))
 				continue
 			}
@@ -281,7 +281,7 @@ func computeAllNfa() {
 
 			// len(conds) != 0
 			for _, sc := range conds {
-				if sc != "*" { // rule is active in all it's explicitly declared start conditions
+				if sc != "*" { // rule is active in all its explicitly declared start conditions
 					in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]+128))
 					continue
 				}
