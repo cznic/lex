@@ -263,7 +263,7 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.
 	computeAllNfa()
 	allDfa = allNfa.powerSet()
 	for _, irule := range allDfa.acceptRule {
-		unreachableRules[irule] = false, false
+		delete(unreachableRules, irule)
 	}
 	for irule := range unreachableRules {
 		logErr(fmt.Sprintf("%s - pattern `%s` unreachable", rulePos[irule], rules[irule].pattern))
