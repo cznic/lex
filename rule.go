@@ -9,13 +9,13 @@ package lex
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"go/token"
-	"os"
 	"regexp"
 	"strconv"
 	"unicode"
-	"utf8"
+	"unicode/utf8"
 )
 
 var (
@@ -29,7 +29,7 @@ func parsePattern(pos token.Position, src string, stack map[string]bool) (patter
 	defer func() {
 		if e := recover(); e != nil {
 			pos.Column += p.pos
-			logErr(fmt.Sprintf(`%s - "%s^%s" - %s`, pos, src[:p.pos], src[p.pos:], e.(os.Error)))
+			logErr(fmt.Sprintf(`%s - "%s^%s" - %s`, pos, src[:p.pos], src[p.pos:], e.(error)))
 		}
 	}()
 
@@ -44,7 +44,7 @@ func parsePattern(pos token.Position, src string, stack map[string]bool) (patter
 		action = src[p.pos:]
 		return
 	}
-	panic(os.NewError("syntax error"))
+	panic(errors.New("syntax error"))
 }
 
 type pat struct {
@@ -109,7 +109,7 @@ func (p *pat) parseExpr(nest int) {
 		return
 	}
 
-	panic(os.NewError(`expected "alernative"`))
+	panic(errors.New(`expected "alernative"`))
 }
 
 func (p *pat) parseAlt(nest int) {
@@ -125,7 +125,7 @@ func (p *pat) parseAlt(nest int) {
 		return
 	}
 
-	panic(os.NewError(`expected "term"`))
+	panic(errors.New(`expected "term"`))
 }
 
 func (p *pat) parseTerm(nest int) (ok bool) {
@@ -150,7 +150,7 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 			p.bol = true
 		}
 	case '/':
-		panic(os.NewError("trailing context not supported"))
+		panic(errors.New("trailing context not supported"))
 	case '.':
 		p.move()
 		if !bits32 {
@@ -171,7 +171,7 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 		return false
 	case ')':
 		if nest == 0 {
-			panic(os.NewError(`unexpected ")"`))
+			panic(errors.New(`unexpected ")"`))
 		}
 		return false
 	case '(':
@@ -313,7 +313,7 @@ func (p *pat) parseChar() (b int) {
 		s := ""
 		for i := 0; i < 2; i++ {
 			if p.eof(true) {
-				panic(os.NewError("unexpected regexp end"))
+				panic(errors.New("unexpected regexp end"))
 			}
 			p.move()
 			s += string(p.current())
@@ -328,7 +328,7 @@ func (p *pat) parseChar() (b int) {
 		s := ""
 		for i := 0; i < 4; i++ {
 			if p.eof(true) {
-				panic(os.NewError("unexpected regexp end"))
+				panic(errors.New("unexpected regexp end"))
 			}
 			p.move()
 			s += string(p.current())
@@ -343,7 +343,7 @@ func (p *pat) parseChar() (b int) {
 		s := ""
 		for i := 0; i < 8; i++ {
 			if p.eof(true) {
-				panic(os.NewError("unexpected regexp end"))
+				panic(errors.New("unexpected regexp end"))
 			}
 			p.move()
 			s += string(p.current())

@@ -74,10 +74,10 @@ package lex
 import (
 	"bytes"
 	"github.com/cznic/lexer"
+	"errors"
 	"fmt"
 	"go/token"
 	"io"
-	"os"
 	"strings"
 )
 
@@ -93,7 +93,7 @@ var (
 	defPos           = map[string]token.Position{}
 	defCode          []string
 	defRE            = map[string]string{}
-	errors           []string
+	errors_          []string
 	rules            = []rule{{}}
 	rulePos          = []token.Position{{}}
 	unreachableRules = map[int]bool{}
@@ -114,7 +114,7 @@ var (
 )
 
 func logErr(s string) {
-	errors = append(errors, s)
+	errors_ = append(errors_, s)
 }
 
 // Rule represents data for a pattern/action
@@ -235,9 +235,9 @@ func (l *L) String() string {
 // (which is assumed tolerable for a "lex" tool).
 // The unoptdfa argument allows to disable optimization of the produced DFA.
 // The mode32 parameter is not yet supported and must be false.
-func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.Error) {
+func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err error) {
 	if mode32 {
-		return nil, os.NewError("lex.NewL: mode32 unsupported yet")
+		return nil, errors.New("lex.NewL: mode32 unsupported yet")
 	}
 
 	nodfaopt, bits32 = unoptdfa, mode32
@@ -246,18 +246,18 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.
 	defer func() {
 		if e := recover(); e != nil {
 			l = nil
-			err = e.(os.Error)
+			err = e.(error)
 		}
 	}()
 
 	scanner := lxr.Scanner(fname, src)
-	if y := yyParse(newTokenizer(scanner)); y != 0 || len(errors) != 0 {
-		return nil, os.NewError(strings.Join(errors, "\n"))
+	if y := yyParse(newTokenizer(scanner)); y != 0 || len(errors_) != 0 {
+		return nil, errors.New(strings.Join(errors_, "\n"))
 	}
 
 	computePartialDFAs()
-	if len(errors) != 0 {
-		return nil, os.NewError(strings.Join(errors, "\n"))
+	if len(errors_) != 0 {
+		return nil, errors.New(strings.Join(errors_, "\n"))
 	}
 
 	computeAllNfa()
@@ -268,8 +268,8 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.
 	for irule := range unreachableRules {
 		logErr(fmt.Sprintf("%s - pattern `%s` unreachable", rulePos[irule], rules[irule].pattern))
 	}
-	if len(errors) != 0 {
-		return nil, os.NewError(strings.Join(errors, "\n"))
+	if len(errors_) != 0 {
+		return nil, errors.New(strings.Join(errors_, "\n"))
 	}
 
 	l.DefCode = defCode
@@ -280,10 +280,10 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.
 	for _, edge0 := range allDfa.nfa.in.Consuming {
 		switch edge := edge0.(type) {
 		default:
-			panic(os.NewError("internal error"))
+			panic(errors.New("internal error"))
 		case *lexer.RuneEdge:
 			if _, ok := l.StartConditionsStates[edge.Rune]; ok {
-				panic(os.NewError("internal error"))
+				panic(errors.New("internal error"))
 			}
 			if edge.Rune < 128 {
 				l.StartConditionsStates[edge.Rune] = edge.Target()
@@ -294,7 +294,7 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err os.
 			for _, rng := range edge.Ranges.R32 {
 				for rune := rng.Lo; rune <= rng.Hi; rune += rng.Stride {
 					if _, ok := l.StartConditionsStates[int(rune)]; ok {
-						panic(os.NewError("internal error"))
+						panic(errors.New("internal error"))
 					}
 					if rune < 128 {
 						l.StartConditionsStates[int(rune)] = edge.Target()

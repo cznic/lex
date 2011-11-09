@@ -8,8 +8,8 @@
 package lex
 
 import (
-	"fmt"
 	"github.com/cznic/lexer"
+	"fmt"
 )
 
 func (t *tokenizer) Lex(lval *yySymType) (c int) {

@@ -10,7 +10,6 @@ package lex
 import (
 	"github.com/cznic/lexer"
 	"fmt"
-	"os"
 	"unicode"
 )
 
@@ -191,7 +190,7 @@ func (d *dfa) toNfa() *nfa {
 }
 
 func computePartialDFAs() {
-	var err os.Error
+	var err error
 	for irule, rule := range rules {
 		if irule == 0 {
 			continue
@@ -200,7 +199,7 @@ func computePartialDFAs() {
 		nfa := nfa{}
 		nfa.in, nfa.out, err = nfa.nfa.ParseRE("", rule.re)
 		if err != nil {
-			logErr(fmt.Sprintf("%s - %s", rulePos[irule], err.String()))
+			logErr(fmt.Sprintf("%s - %s", rulePos[irule], err.Error()))
 		}
 		if nodfaopt {
 			partialDFAs = append(partialDFAs, nfa.powerSet())
