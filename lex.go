@@ -230,7 +230,7 @@ func (l *L) String() string {
 	return buf.String()
 }
 
-// NewL parses a .l source fname from src, returns L or an os.Error if any.
+// NewL parses a .l source fname from src, returns L or an error if any.
 // Currently it is not reentrant and not invokable more than once in an application
 // (which is assumed tolerable for a "lex" tool).
 // The unoptdfa argument allows to disable optimization of the produced DFA.
