@@ -580,7 +580,7 @@ yydefault:
 			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
 				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
 			}
-			unrefStarts[yyS[yypt-0].str] = false, false
+			delete(unrefStarts, yyS[yypt-0].str)
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 41:
@@ -589,7 +589,7 @@ yydefault:
 			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
 				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
 			}
-			unrefStarts[yyS[yypt-0].str] = false, false
+			delete(unrefStarts, yyS[yypt-0].str)
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 42:

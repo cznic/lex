@@ -273,7 +273,7 @@ start_list_ref:
 		if _, ok := defStarts[$1]; !ok {
 			logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), $1))
 		}
-		unrefStarts[$1] = false, false
+		delete(unrefStarts, $1)
 		$$ = append($$, $1)
 	}
 |	start_list_ref ',' tNAME
@@ -281,7 +281,7 @@ start_list_ref:
 		if _, ok := defStarts[$3]; !ok {
 			logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), $3))
 		}
-		unrefStarts[$3] = false, false
+		delete(unrefStarts, $3)
 		$$ = append($$, $3)
 	}
 |	'*'
