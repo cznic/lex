@@ -318,7 +318,7 @@ func (p *pat) parseChar() (b int) {
 			p.move()
 			s += string(p.current())
 		}
-		n, err := strconv.Btoui64(s, 16)
+		n, err := strconv.ParseUint(s, 16, 64)
 		if err != nil {
 			panic(err)
 		}
@@ -333,7 +333,7 @@ func (p *pat) parseChar() (b int) {
 			p.move()
 			s += string(p.current())
 		}
-		n, err := strconv.Btoui64(s, 16)
+		n, err := strconv.ParseUint(s, 16, 64)
 		if err != nil {
 			panic(err)
 		}
@@ -348,7 +348,7 @@ func (p *pat) parseChar() (b int) {
 			p.move()
 			s += string(p.current())
 		}
-		n, err := strconv.Btoui64(s, 16)
+		n, err := strconv.ParseUint(s, 16, 64)
 		if err != nil {
 			panic(err)
 		}
@@ -360,7 +360,7 @@ func (p *pat) parseChar() (b int) {
 			s += string(b)
 			p.move()
 		}
-		n, err := strconv.Btoui64(s, 8)
+		n, err := strconv.ParseUint(s, 8, 64)
 		if err != nil {
 			panic(err)
 		}
