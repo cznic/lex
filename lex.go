@@ -282,24 +282,24 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err err
 		default:
 			panic(errors.New("internal error"))
 		case *lexer.RuneEdge:
-			if _, ok := l.StartConditionsStates[edge.Rune]; ok {
+			if _, ok := l.StartConditionsStates[int(edge.Rune)]; ok {
 				panic(errors.New("internal error"))
 			}
 			if edge.Rune < 128 {
-				l.StartConditionsStates[edge.Rune] = edge.Target()
+				l.StartConditionsStates[int(edge.Rune)] = edge.Target()
 			} else {
-				l.StartConditionsBolStates[edge.Rune-128] = edge.Target()
+				l.StartConditionsBolStates[int(edge.Rune)-128] = edge.Target()
 			}
 		case *lexer.RangesEdge:
 			for _, rng := range edge.Ranges.R32 {
-				for rune := rng.Lo; rune <= rng.Hi; rune += rng.Stride {
-					if _, ok := l.StartConditionsStates[int(rune)]; ok {
+				for arune := rng.Lo; arune <= rng.Hi; arune += rng.Stride {
+					if _, ok := l.StartConditionsStates[int(arune)]; ok {
 						panic(errors.New("internal error"))
 					}
-					if rune < 128 {
-						l.StartConditionsStates[int(rune)] = edge.Target()
+					if arune < 128 {
+						l.StartConditionsStates[int(arune)] = edge.Target()
 					} else {
-						l.StartConditionsBolStates[int(rune)-128] = edge.Target()
+						l.StartConditionsBolStates[int(arune)-128] = edge.Target()
 					}
 				}
 			}

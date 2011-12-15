@@ -113,7 +113,7 @@ func (n *nfa) powerSet() (d *dfa) {
 					default:
 						panic(fmt.Errorf("unexpeceted type %T", edge))
 					case *lexer.RuneEdge:
-						s(closures, x.Rune).closure(x.Target(), p)
+						s(closures, int(x.Rune)).closure(x.Target(), p)
 					case *lexer.RangesEdge:
 						if !bits32 {
 							var m [256]bool
@@ -162,7 +162,7 @@ func (n *nfa) powerSet() (d *dfa) {
 			for s, slice := range mm {
 				switch len(slice) {
 				case 1:
-					state.AddConsuming(lexer.NewRuneEdge(s, slice[0]))
+					state.AddConsuming(lexer.NewRuneEdge(s, rune(slice[0])))
 				default:
 					r := []unicode.Range32{}
 					for _, char := range slice {
@@ -235,7 +235,7 @@ func computeAllNfa() {
 		conds := rules[irule].conds
 		if len(conds) == 0 { // rule is active in all non exclusive start conditions
 			for _, sc := range sStarts {
-				in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]))
+				in.AddConsuming(lexer.NewRuneEdge(ruleIn, rune(iStarts[sc])))
 			}
 			continue
 		}
@@ -243,13 +243,13 @@ func computeAllNfa() {
 		// len(conds) != 0
 		for _, sc := range conds {
 			if sc != "*" { // rule is active in all its explicitly declared start conditions
-				in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]))
+				in.AddConsuming(lexer.NewRuneEdge(ruleIn, rune(iStarts[sc])))
 				continue
 			}
 
 			// sc == "*", rule is always active
 			for sc := range defStarts {
-				in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]))
+				in.AddConsuming(lexer.NewRuneEdge(ruleIn, rune(iStarts[sc])))
 			}
 		}
 	}
@@ -273,7 +273,7 @@ func computeAllNfa() {
 			conds := rules[irule].conds
 			if len(conds) == 0 { // rule is active in all non exclusive start conditions
 				for _, sc := range sStarts {
-					in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]+128))
+					in.AddConsuming(lexer.NewRuneEdge(ruleIn, rune(iStarts[sc]+128)))
 				}
 				continue
 			}
@@ -281,13 +281,13 @@ func computeAllNfa() {
 			// len(conds) != 0
 			for _, sc := range conds {
 				if sc != "*" { // rule is active in all its explicitly declared start conditions
-					in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]+128))
+					in.AddConsuming(lexer.NewRuneEdge(ruleIn, rune(iStarts[sc]+128)))
 					continue
 				}
 
 				// sc == "*", rule is always active
 				for sc := range defStarts {
-					in.AddConsuming(lexer.NewRuneEdge(ruleIn, iStarts[sc]+128))
+					in.AddConsuming(lexer.NewRuneEdge(ruleIn, rune(iStarts[sc]+128)))
 				}
 			}
 		}

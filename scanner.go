@@ -13,7 +13,8 @@ import (
 )
 
 func (t *tokenizer) Lex(lval *yySymType) (c int) {
-	c, ok := t.scanner.Scan()
+	rc, ok := t.scanner.Scan()
+	c = int(rc)
 	if ok {
 		lval.str = string(t.scanner.Token())
 	} else {

@@ -56,10 +56,10 @@ type pat struct {
 	bol, eol bool
 }
 
-func (p *pat) current() (y int) {
+func (p *pat) current() (y rune) {
 	if i := p.pos; i < len(p.src) {
 		if !bits32 {
-			return int(p.src[i])
+			return rune(p.src[i])
 		}
 
 		y, p.delta = utf8.DecodeRuneInString(p.src[i:])
@@ -85,7 +85,7 @@ func (p *pat) move() {
 	return
 }
 
-func (p *pat) accept(b int) bool {
+func (p *pat) accept(b rune) bool {
 	if b == p.current() {
 		p.move()
 		return true
@@ -276,7 +276,7 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 	return
 }
 
-func (p *pat) mustParseChar(whiteIsEof bool) (b int) {
+func (p *pat) mustParseChar(whiteIsEof bool) (b rune) {
 	if p.eof(whiteIsEof) {
 		panic(fmt.Errorf("unexpected regexp end"))
 	}
@@ -286,7 +286,7 @@ func (p *pat) mustParseChar(whiteIsEof bool) (b int) {
 	return
 }
 
-func (p *pat) parseChar() (b int) {
+func (p *pat) parseChar() (b rune) {
 	if b = p.current(); b != '\\' {
 		return
 	}
@@ -323,7 +323,7 @@ func (p *pat) parseChar() (b int) {
 			panic(err)
 		}
 
-		return int(n)
+		return rune(n)
 	case 'u':
 		s := ""
 		for i := 0; i < 4; i++ {
@@ -338,7 +338,7 @@ func (p *pat) parseChar() (b int) {
 			panic(err)
 		}
 
-		return int(n)
+		return rune(n)
 	case 'U':
 		s := ""
 		for i := 0; i < 8; i++ {
@@ -353,7 +353,7 @@ func (p *pat) parseChar() (b int) {
 			panic(err)
 		}
 
-		return int(n)
+		return rune(n)
 	case '0', '1', '2', '3', '4', '5', '6', '7':
 		s := ""
 		for b = p.current(); (len(s) < 3 || bits32 && len(s) < 7) && b >= '0' && b <= '7'; b = p.current() {
@@ -370,13 +370,13 @@ func (p *pat) parseChar() (b int) {
 		}
 
 		p.pos--
-		return int(n)
+		return rune(n)
 	}
 
 	panic("unreachable")
 }
 
-func (p *pat) expect(b int) {
+func (p *pat) expect(b rune) {
 	if !p.accept(b) {
 		panic(fmt.Errorf("expected %q, got %q", string(b), string(p.current())))
 	}
