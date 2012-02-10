@@ -73,9 +73,9 @@ package lex
 
 import (
 	"bytes"
-	"github.com/cznic/lexer"
 	"errors"
 	"fmt"
+	"github.com/cznic/lexer"
 	"go/token"
 	"io"
 	"strings"

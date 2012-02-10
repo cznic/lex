@@ -7,8 +7,8 @@
 package lex
 
 import (
-	"github.com/cznic/lexer"
 	"fmt"
+	"github.com/cznic/lexer"
 	"unicode"
 )
 
