@@ -78,6 +78,7 @@ import (
 	"github.com/cznic/lexer"
 	"go/token"
 	"io"
+	"sort"
 	"strings"
 )
 
@@ -162,7 +163,15 @@ func (l *L) DfaString() string {
 	buf := bytes.NewBuffer(nil)
 
 	buf.WriteString("StartConditions:\n")
-	for name, id := range l.StartConditions {
+
+	// Stabilize
+	a := []string{}
+	for name := range l.StartConditions {
+		a = append(a, name)
+	}
+	sort.Strings(a)
+	for _, name := range a {
+		id := l.StartConditions[name]
 		if l.StartConditionsStates[id] != nil {
 			buf.WriteString(fmt.Sprintf("\t%s, scId:%d, stateId:%d\n", name, id, l.StartConditionsStates[id].Index))
 		}
@@ -170,10 +179,22 @@ func (l *L) DfaString() string {
 			buf.WriteString(fmt.Sprintf("\t^%s, scId:%d, stateId:%d\n", name, id, l.StartConditionsBolStates[id].Index))
 		}
 	}
+
 	buf.WriteString(fmt.Sprintf("DFA:%s\n", l.Dfa.String()))
+
+	// Stabilize
+	as, ar := []int{}, map[int]int{}
 	for state, rule := range l.Accepts {
-		buf.WriteString(fmt.Sprintf("state %d accepts rule %d\n", state.Index, rule))
+		i := int(state.Index)
+		as = append(as, i)
+		ar[i] = rule
 	}
+	sort.Ints(as)
+	for _, state := range as {
+		rule := ar[state]
+		buf.WriteString(fmt.Sprintf("state %d accepts rule %d\n", state, rule))
+	}
+
 	return buf.String()
 }
 

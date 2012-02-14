@@ -9,6 +9,7 @@ package lex
 import (
 	"fmt"
 	"github.com/cznic/lexer"
+	"sort"
 	"unicode"
 )
 
@@ -154,11 +155,30 @@ func (n *nfa) powerSet() (d *dfa) {
 				}
 			}
 			mm := map[*lexer.NfaState][]int{}
-			for char, closure := range closures {
+
+			// Stabilize
+			a := []int{}
+			for char := range closures {
+				a = append(a, char)
+			}
+			sort.Ints(a)
+			for _, char := range a {
+				closure = closures[char]
 				state := f(closure)
 				mm[state] = append(mm[state], char)
 			}
-			for s, slice := range mm {
+
+			// Stabilize
+			ai, as := []int{}, map[int]*lexer.NfaState{}
+			for s := range mm {
+				i := int(s.Index)
+				ai = append(ai, i)
+				as[i] = s
+			}
+			sort.Ints(ai)
+			for _, si := range ai {
+				s := as[si]
+				slice := mm[s]
 				switch len(slice) {
 				case 1:
 					state.AddConsuming(lexer.NewRuneEdge(s, rune(slice[0])))
