@@ -210,6 +210,7 @@ func (d *dfa) toNfa() *nfa {
 
 func computePartialDFAs() {
 	var err error
+	fmt.Println(rules)
 	for irule, rule := range rules {
 		if irule == 0 {
 			continue

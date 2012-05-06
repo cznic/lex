@@ -99,13 +99,13 @@ def_body:
 	{
 		sc(yylex).PopState()
 	}
-	'\n'
+	'\r''\n'
 	{
 		$$ = $3
 	}
 
 def_section_item:
-	'\n'
+	newline
 |	tDEF_NAME
 	{
 		defNamePos0 = sc(yylex).TokenStart()
@@ -122,7 +122,7 @@ def_section_item:
 		defPos[$1] = sc(yylex).TokenStart()
 		sc(yylex).PopState()
 	}
-	'\n'
+	newline
 |	tUNINDENTED_COMMENT
 	{
 		defCode = append(defCode, $1 + "\n")
@@ -203,7 +203,7 @@ obligatory:
 
 
 rules_section_item:
-	'\n'
+	newline
 |	tINDENTED_TEXT
 	{
 		moreAction($1)
@@ -309,5 +309,6 @@ verbatim_lines:
 		$$ += $2
 	}
 
-
+newline: '\n'
+		| '\r''\n'
 %%
