@@ -1,5 +1,5 @@
 
-//line ./parser.y:2
+//line parser.y:2
 // Copyright (c) 2011 CZ.NIC z.s.p.o. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -26,7 +26,7 @@ var	(
 
 
 
-//line ./parser.y:30
+//line parser.y:30
 type yySymType struct {
 	yys int
 	str  string
@@ -82,7 +82,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyMaxDepth = 200
 
-//line ./parser.y:314
+//line parser.y:314
 
 
 //line yacctab:1
@@ -411,38 +411,38 @@ yydefault:
 	switch yynt {
 
 	case 2:
-		//line ./parser.y:80
+		//line parser.y:80
 		{
 			sc(yylex).Begin(_USER)
 		}
 	case 3:
-		//line ./parser.y:84
+		//line parser.y:84
 		{
 			usrCode = yyS[yypt-0].str
 		}
 	case 6:
-		//line ./parser.y:94
+		//line parser.y:94
 		{
 			sc(yylex).PushState(_DEF_NAME)
 		}
 	case 7:
-		//line ./parser.y:99
+		//line parser.y:99
 		{
 			sc(yylex).PopState()
 		}
 	case 8:
-		//line ./parser.y:103
+		//line parser.y:103
 		{
 			yyVAL.str = yyS[yypt-3].str
 		}
 	case 10:
-		//line ./parser.y:110
+		//line parser.y:110
 		{
 			defNamePos0 = sc(yylex).TokenStart()
 			sc(yylex).PushState(_DEF_NAME)
 		}
 	case 11:
-		//line ./parser.y:116
+		//line parser.y:116
 		{
 			if _, ok := defs[yyS[yypt-3].str]; ok {
 				logErr(fmt.Sprintf("%s:%q redefined", defNamePos0, yyS[yypt-3].str))
@@ -453,44 +453,44 @@ yydefault:
 			sc(yylex).PopState()
 		}
 	case 13:
-		//line ./parser.y:127
+		//line parser.y:127
 		{
 			defCode = append(defCode, yyS[yypt-0].str + "\n")
 		}
 	case 14:
-		//line ./parser.y:131
+		//line parser.y:131
 		{
 			defCode = append(defCode, yyS[yypt-0].str + "\n")
 		}
 	case 15:
-		//line ./parser.y:135
+		//line parser.y:135
 		{
 			sc(yylex).PushState(_VERBATIM)
 		}
 	case 16:
-		//line ./parser.y:140
+		//line parser.y:140
 		{	
 			defCode = append(defCode, yyS[yypt-1].str + "\n")
 			sc(yylex).PopState()
 		}
 	case 17:
-		//line ./parser.y:145
+		//line parser.y:145
 		{
 			sc(yylex).PushState(_DEF_STARTS)
 		}
 	case 18:
-		//line ./parser.y:149
+		//line parser.y:149
 		{
 			sStarts = append(sStarts, yyS[yypt-0].strs...)
 			sc(yylex).PopState()
 		}
 	case 19:
-		//line ./parser.y:154
+		//line parser.y:154
 		{
 			sc(yylex).PushState(_DEF_STARTS)
 		}
 	case 20:
-		//line ./parser.y:158
+		//line parser.y:158
 		{
 			xStarts = append(xStarts, yyS[yypt-0].strs...)
 			for _, start := range yyS[yypt-0].strs {
@@ -499,27 +499,27 @@ yydefault:
 			sc(yylex).PopState()
 		}
 	case 21:
-		//line ./parser.y:167
+		//line parser.y:167
 		{
 			_yyt = yyS[yypt-0].str
 		}
 	case 22:
-		//line ./parser.y:172
+		//line parser.y:172
 		{
 			_yyb = yyS[yypt-0].str
 		}
 	case 23:
-		//line ./parser.y:177
+		//line parser.y:177
 		{
 			_yyc = yyS[yypt-0].str
 		}
 	case 24:
-		//line ./parser.y:182
+		//line parser.y:182
 		{
 			_yyn = yyS[yypt-0].str
 		}
 	case 27:
-		//line ./parser.y:195
+		//line parser.y:195
 		{
 			for s := range unrefStarts {
 				logErr(fmt.Sprintf("%s:start condition %q declared and not used", sc(yylex).TokenStart(), s))
@@ -529,23 +529,23 @@ yydefault:
 			}
 		}
 	case 29:
-		//line ./parser.y:208
+		//line parser.y:208
 		{
 			moreAction(yyS[yypt-0].str)
 		}
 	case 30:
-		//line ./parser.y:212
+		//line parser.y:212
 		{
 			sc(yylex).PushState(_VERBATIM)
 		}
 	case 31:
-		//line ./parser.y:217
+		//line parser.y:217
 		{	
 			moreAction(yyS[yypt-1].str)
 			sc(yylex).PopState()
 		}
 	case 32:
-		//line ./parser.y:222
+		//line parser.y:222
 		{
 			rulePos = append(rulePos, sc(yylex).TokenStart())
 			pat, re, action, bol, eol := parsePattern(sc(yylex).TokenStart(), yyS[yypt-0].str, map[string]bool{})
@@ -553,17 +553,17 @@ yydefault:
 			rules = append(rules, rule{nil, pat, re, action, nil, nil, bol, eol})
 		}
 	case 33:
-		//line ./parser.y:229
+		//line parser.y:229
 		{
 			sc(yylex).PushState(_STARTS)
 		}
 	case 34:
-		//line ./parser.y:234
+		//line parser.y:234
 		{
 			sc(yylex).PopState()
 		}
 	case 35:
-		//line ./parser.y:238
+		//line parser.y:238
 		{
 			rulePos = append(rulePos, sc(yylex).TokenStart())
 			pat, re, action, bol, eol := parsePattern(sc(yylex).TokenStart(), yyS[yypt-0].str, map[string]bool{})
@@ -571,12 +571,12 @@ yydefault:
 			rules = append(rules, rule{yyS[yypt-3].strs, pat, re, action, nil, nil, bol, eol})
 		}
 	case 36:
-		//line ./parser.y:247
+		//line parser.y:247
 		{
 			sc(yylex).PushState(_RULES)
 		}
 	case 38:
-		//line ./parser.y:255
+		//line parser.y:255
 		{
 			if !addStartSet(yyS[yypt-0].str) {
 				logErr(fmt.Sprintf("%s:start condition %q redeclared", sc(yylex).TokenStart(), yyS[yypt-0].str))
@@ -584,7 +584,7 @@ yydefault:
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 39:
-		//line ./parser.y:262
+		//line parser.y:262
 		{
 			if !addStartSet(yyS[yypt-0].str) {
 				logErr(fmt.Sprintf("%s:start condition %q redeclared", sc(yylex).TokenStart(), yyS[yypt-0].str))
@@ -592,7 +592,7 @@ yydefault:
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 40:
-		//line ./parser.y:272
+		//line parser.y:272
 		{
 			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
 				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
@@ -601,7 +601,7 @@ yydefault:
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 41:
-		//line ./parser.y:280
+		//line parser.y:280
 		{
 			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
 				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
@@ -610,27 +610,27 @@ yydefault:
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 42:
-		//line ./parser.y:288
+		//line parser.y:288
 		{
 			yyVAL.strs = append(yyVAL.strs, "*")
 		}
 	case 43:
-		//line ./parser.y:294
+		//line parser.y:294
 		{
 			yyVAL.str = ""
 		}
 	case 44:
-		//line ./parser.y:298
+		//line parser.y:298
 		{
 			yyVAL.str += yyS[yypt-0].str
 		}
 	case 45:
-		//line ./parser.y:304
+		//line parser.y:304
 		{
 			yyVAL.str = ""
 		}
 	case 46:
-		//line ./parser.y:308
+		//line parser.y:308
 		{
 			yyVAL.str += yyS[yypt-0].str
 		}
