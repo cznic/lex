@@ -281,7 +281,6 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err err
 	if len(errors_) != 0 {
 		return nil, errors.New(strings.Join(errors_, "\n"))
 	}
-	fmt.Println("going to fill in accepts table")
 	computeAllNfa()
 	allDfa = allNfa.powerSet()
 	for _, irule := range allDfa.acceptRule {
