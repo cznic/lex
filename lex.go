@@ -270,17 +270,17 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err err
 			err = e.(error)
 		}
 	}()
-
+	
 	scanner := lxr.Scanner(fname, src)
+	
 	if y := yyParse(newTokenizer(scanner)); y != 0 || len(errors_) != 0 {
 		return nil, errors.New(strings.Join(errors_, "\n"))
 	}
-
+	
 	computePartialDFAs()
 	if len(errors_) != 0 {
 		return nil, errors.New(strings.Join(errors_, "\n"))
 	}
-
 	computeAllNfa()
 	allDfa = allNfa.powerSet()
 	for _, irule := range allDfa.acceptRule {
@@ -327,11 +327,13 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err err
 		}
 
 	}
+	
 	for _, rule := range rules {
 		l.Rules = append(l.Rules, Rule{Conds: rule.conds, Pattern: rule.pattern, RE: rule.re, Action: rule.action, BOL: rule.bol, EOL: rule.eol})
 	}
 	l.Dfa = allDfa.nfa.nfa[1:]
 	l.Accepts = map[*lexer.NfaState]int{}
+	
 	for id, state := range allDfa.accept {
 		l.Accepts[state] = allDfa.acceptRule[id]
 	}
