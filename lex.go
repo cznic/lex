@@ -271,6 +271,22 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err err
 		}
 	}()
 
+	// Support \r\n line separators too
+	in := []rune{}
+loop:
+	for {
+		r, _, err := src.ReadRune()
+		switch {
+		case err == nil:
+			in = append(in, r)
+		case err == io.EOF:
+			break loop
+		default:
+			return nil, err
+		}
+	}
+	src = bytes.NewBufferString(strings.Replace(string(in), "\r\n", "\n", -1))
+
 	scanner := lxr.Scanner(fname, src)
 	if y := yyParse(newTokenizer(scanner)); y != 0 || len(errors_) != 0 {
 		return nil, errors.New(strings.Join(errors_, "\n"))
