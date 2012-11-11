@@ -22,12 +22,12 @@
 //	%s non-exclusive-start-condition s2 s3
 //
 //	%x exclusive-start-condition e2
-//	
+//
 //	%yyt getTopState() // not required when only INITIAL start condition exists
 //	%yyb last == '\n' || last = '\0'
 //	%yyc getCurrentChar()
 //	%yyn move()
-//	
+//
 //	%%
 //		Indented text before the first rule is presumably treated specially (renderer specific)
 //
@@ -41,9 +41,9 @@
 //		return(IDENT)
 //
 //	A"[foo]\"bar"Z println(`A[foo]"barZ`)
-//	
+//
 //	^bol|eol$
-//	
+//
 //	<non-exclusive-start-condition>foo
 //	%{
 //		println("foo found")
