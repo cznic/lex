@@ -188,13 +188,23 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 		for {
 			a := p.mustParseChar(false)
 			p.re.WriteString(regexp.QuoteMeta(string(a)))
-			if p.accept('-') {
-				p.re.WriteRune('-')
-				b := p.mustParseChar(false)
-				if b < a {
-					panic(fmt.Errorf(`invalid range bounds ordering in bracket expression "%s-%s"`, string(a), string(b)))
+			switch p.current() {
+			case '\\':
+				switch c := p.mustParseChar(false); c {
+				case '-':
+					p.re.WriteString(`\-`)
+				default:
+					p.re.WriteString(regexp.QuoteMeta(string(c)))
 				}
-				p.re.WriteString(regexp.QuoteMeta(string(b)))
+			default:
+				if p.accept('-') {
+					p.re.WriteRune('-')
+					b := p.mustParseChar(false)
+					if b < a {
+						panic(fmt.Errorf(`invalid range bounds ordering in bracket expression "%s-%s"`, string(a), string(b)))
+					}
+					p.re.WriteString(regexp.QuoteMeta(string(b)))
+				}
 			}
 			if p.accept(']') {
 				break

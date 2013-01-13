@@ -251,6 +251,8 @@ func (l *L) String() string {
 	return buf.String()
 }
 
+var hook bool
+
 // NewL parses a .l source fname from src, returns L or an error if any.
 // Currently it is not reentrant and not invokable more than once in an application
 // (which is assumed tolerable for a "lex" tool).
@@ -264,12 +266,14 @@ func NewL(fname string, src io.RuneReader, unoptdfa, mode32 bool) (l *L, err err
 	nodfaopt, bits32 = unoptdfa, mode32
 	l = &L{}
 
-	defer func() {
-		if e := recover(); e != nil {
-			l = nil
-			err = e.(error)
-		}
-	}()
+	if !hook {
+		defer func() {
+			if e := recover(); e != nil {
+				l = nil
+				err = e.(error)
+			}
+		}()
+	}
 
 	// Support \r\n line separators too
 	in := []rune{}

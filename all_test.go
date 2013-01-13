@@ -8,9 +8,17 @@ package lex
 
 import (
 	"bytes"
+	"flag"
 	"strings"
 	"testing"
 )
+
+var trace *bool
+
+func init() {
+	hook = true
+	trace = flag.Bool("trace", false, "allow test runtime error stack traces")
+}
 
 func TestLineSeparators(t *testing.T) {
 	const text = `
@@ -80,6 +88,13 @@ F  {D}"."{D}?{E}?|{D}{E}?|"."{D}{E}?
 
     return NUM
 
+	// https://github.com/cznic/golex/issues/1
+a[ \-*]
+b[ -*]
+c[ \-*]
+d[\+\-\*]
+
+
 %%
     y.empty = true
     return int(c)
@@ -87,6 +102,14 @@ F  {D}"."{D}?{E}?|{D}{E}?|"."{D}{E}?
 	text2 := strings.Replace(text, "\n", "\r\n", -1)
 	if !(len(text2) > len(text)) {
 		t.Fatal()
+	}
+
+	if !*trace {
+		defer func() {
+			if e := recover(); e != nil {
+				t.Fatal(e)
+			}
+		}()
 	}
 
 	src := bytes.NewBufferString(text2)

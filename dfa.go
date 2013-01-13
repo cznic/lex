@@ -219,7 +219,9 @@ func computePartialDFAs() {
 		nfa.in, nfa.out, err = nfa.nfa.ParseRE("", rule.re)
 		if err != nil {
 			logErr(fmt.Sprintf("%s - %s", rulePos[irule], err.Error()))
+			return // <- this was missing!
 		}
+
 		if nodfaopt {
 			partialDFAs = append(partialDFAs, nfa.powerSet())
 		} else {
