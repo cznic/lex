@@ -185,6 +185,7 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 		if p.accept('^') {
 			p.re.WriteString("^\\x00-\\x00")
 		}
+	loop:
 		for {
 			a := p.mustParseChar(false)
 			p.re.WriteString(regexp.QuoteMeta(string(a)))
@@ -199,6 +200,11 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 			default:
 				if p.accept('-') {
 					p.re.WriteRune('-')
+					if p.current() == ']' {
+						p.move()
+						break loop
+					}
+
 					b := p.mustParseChar(false)
 					if b < a {
 						panic(fmt.Errorf(`invalid range bounds ordering in bracket expression "%s-%s"`, string(a), string(b)))
