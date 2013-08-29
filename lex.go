@@ -80,6 +80,8 @@ import (
 	"io"
 	"sort"
 	"strings"
+
+	"github.com/cznic/fileutil"
 )
 
 type rule struct {
@@ -283,7 +285,7 @@ loop:
 		switch {
 		case err == nil:
 			in = append(in, r)
-		case err == io.EOF:
+		case fileutil.IsEOF(err):
 			break loop
 		default:
 			return nil, err
