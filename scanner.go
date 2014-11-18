@@ -10,6 +10,7 @@ import (
 )
 
 func (t *tokenizer) Lex(lval *yySymType) (c int) {
+	//defer func() { dbg("Lex %q %d", c, c) }()
 	rc, ok := t.scanner.Scan()
 	c = int(rc)
 	if ok {
@@ -55,7 +56,7 @@ func init() {
 		[][]int{
 			// _DEF
 			{tDEF_NAME, tUNINDENTED_COMMENT, tINDENTED_TEXT, tVERBATIM_OPEN, tSECTION_DIV,
-				tSSTART, tXSTART, tYYT, tYYB, tYYC, tYYN},
+				tSSTART, tXSTART, tYYT, tYYB, tYYC, tYYN, tYYM},
 			// _DEF_NAME
 			{tBLANKS, tDEFINITION},
 			// _DEF_STARTS
@@ -90,6 +91,7 @@ func init() {
 			`/^%yyb/`:                   tYYB,
 			`/^%yyc/`:                   tYYC,
 			`/^%yyn/`:                   tYYN,
+			`/^%yym/`:                   tYYM,
 		},
 		"",
 		"",

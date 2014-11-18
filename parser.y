@@ -42,6 +42,7 @@ var	(
 	tYYB
 	tYYC
 	tYYN
+	tYYM
 
 
 %token <str>
@@ -178,6 +179,11 @@ def_section_item:
 	def_body
 	{
 		_yyn = $2
+	}
+|	tYYM
+	def_body
+	{
+		_yym = $2
 	}
 
 

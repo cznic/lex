@@ -5,6 +5,11 @@
 // Package lex provides support for a *nix (f)lex like tool on .l sources.
 // The syntax is similar to a subset of (f)lex, see also: http://flex.sourceforge.net/manual/Format.html#Format
 //
+// Changelog
+//
+// 2014-11-18: Add option for marking an accepting state. Required to support
+// POSIX longest match.
+//
 // Some feature examples:
 //
 //	/* Unindented multiline Go comments in the definitions section */
@@ -24,7 +29,8 @@
 //	%yyt getTopState() // not required when only INITIAL start condition exists
 //	%yyb last == '\n' || last = '\0'
 //	%yyc getCurrentChar()
-//	%yyn move()
+//	%yyn move() // get next character
+//	%yym mark() // now in accepting state
 //
 //	%%
 //		Indented text before the first rule is presumably treated specially (renderer specific)
@@ -110,6 +116,7 @@ var (
 	_yyb             = "yyb"
 	_yyc             = "yyc"
 	_yyn             = "yyn"
+	_yym             = "yym"
 	nodfaopt         bool
 	bits32           bool // enables unicode rune processing, standard is byte
 )
@@ -129,18 +136,22 @@ type Rule struct {
 }
 
 // L represents selected data structures found in / generated from a .l source.
-// A [command line] tool using this package may then render L to some programming language source code
-// and/or data table(s).
+// A [command line] tool using this package may then render L to some
+// programming language source code and/or data table(s).
 type L struct {
 	// Source code lines for rendering from the definitions section
 	DefCode []string
-	// Names of declared start conditions with their respective numeric identificators
+	// Names of declared start conditions with their respective numeric
+	// identificators
 	StartConditions map[string]int
-	// Start conditions numeric identificators with their respective DFA start state
+	// Start conditions numeric identificators with their respective DFA
+	// start state
 	StartConditionsStates map[int]*lexer.NfaState
-	// Beginnig of line start conditions numeric identificators with their respective DFA start state
+	// Beginnig of line start conditions numeric identificators with their
+	// respective DFA start state
 	StartConditionsBolStates map[int]*lexer.NfaState
-	// Rule[0] is a pseudo rule. It's action contains the source code for rendering from the rules section before firts rule
+	// Rule[0] is a pseudo rule. It's action contains the source code for
+	// rendering from the rules section before firts rule
 	Rules []Rule
 	// The generated FSM
 	Dfa lexer.Nfa
@@ -148,14 +159,21 @@ type L struct {
 	Accepts map[*lexer.NfaState]int
 	// Source code for rendering from the user code section
 	UserCode string
-	// Source code for rendering of get_current_start_condition
+	// Source code for rendering of get_current_start_condition. Set by
+	// %yyt.
 	YYT string
-	// Source code for rendering of get_bol, i.e. if we are at the beginning of line right now.
+	// Source code for rendering of get_bol, i.e. if we are at the
+	// beginning of line right now. Set by %yyb.
 	YYB string
-	// Source code for rendering of get_peek_char, i.e. the char the lexer will now consider in making of a decision.
+	// Source code for rendering of get_peek_char, i.e. the char the lexer
+	// will now consider in making of a decision. Set by %yyc.
 	YYC string
-	// Source code for rendering of move_to_next_char, i.e. "consume" the current peek char and go to the next one.
+	// Source code for rendering of move_to_next_char, i.e. "consume" the
+	// current peek char and go to the next one. Set by %yyn.
 	YYN string
+	// Source code for rendering of mark_accepting, support to accept
+	// longest matching but reusing the "overflowed" input. Set by %yym.
+	YYM string
 }
 
 // DfaString returns the textual representation of the Dfa field.
@@ -359,6 +377,6 @@ loop:
 	l.YYB = _yyb
 	l.YYC = _yyc
 	l.YYN = _yyn
-
+	l.YYM = _yym
 	return
 }

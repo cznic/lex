@@ -2,12 +2,19 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-all: parser.go
+.PHONY: all
 
-parser.go: parser.y
-	go tool yacc -o parser.go parser.y
-	sed -i -e 's|//line.*||' parser.go
-	gofmt -w parser.go
+all: editor
 
 clean:
-	rm -f parser.go y.output *~
+	go clean
+	rm -f y.output *~
+
+editor: parser.go
+	go fmt
+	go test -i
+	go test
+	go install
+
+parser.go: parser.y
+	go tool yacc -o $@ $<

@@ -1,3 +1,5 @@
+//line parser.y:2
+
 // Copyright (c) 2014 The lex Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -7,6 +9,9 @@
 
 package lex
 
+import __yyfmt__ "fmt"
+
+//line parser.y:10
 import (
 	"fmt"
 	"go/token"
@@ -16,6 +21,7 @@ var (
 	defNamePos0 token.Position
 )
 
+//line parser.y:27
 type yySymType struct {
 	yys  int
 	str  string
@@ -33,15 +39,16 @@ const tYYT = 57353
 const tYYB = 57354
 const tYYC = 57355
 const tYYN = 57356
-const tDEF_NAME = 57357
-const tDEFINITION = 57358
-const tUNINDENTED_COMMENT = 57359
-const tINDENTED_TEXT = 57360
-const tVERBATIM_LINE = 57361
-const tPATTERN_LINE = 57362
-const tUSER_CODE_LINE = 57363
-const tNAME = 57364
-const tSTARTS_PATTERN_LINE = 57365
+const tYYM = 57357
+const tDEF_NAME = 57358
+const tDEFINITION = 57359
+const tUNINDENTED_COMMENT = 57360
+const tINDENTED_TEXT = 57361
+const tVERBATIM_LINE = 57362
+const tPATTERN_LINE = 57363
+const tUSER_CODE_LINE = 57364
+const tNAME = 57365
+const tSTARTS_PATTERN_LINE = 57366
 
 var yyToknames = []string{
 	"tSECTION_DIV",
@@ -55,6 +62,7 @@ var yyToknames = []string{
 	"tYYB",
 	"tYYC",
 	"tYYN",
+	"tYYM",
 	"tDEF_NAME",
 	"tDEFINITION",
 	"tUNINDENTED_COMMENT",
@@ -71,101 +79,106 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyMaxDepth = 200
 
+//line parser.y:316
+
+//line yacctab:1
 var yyExca = []int{
 	-1, 1,
 	1, -1,
 	-2, 0,
 }
 
-const yyNprod = 47
+const yyNprod = 48
 const yyPrivate = 57344
 
 var yyTokenNames []string
 var yyStates []string
 
-const yyLast = 67
+const yyLast = 69
 
 var yyAct = []int{
 
-	38, 6, 36, 11, 60, 61, 12, 13, 14, 15,
-	16, 17, 8, 54, 9, 10, 63, 33, 55, 35,
-	62, 7, 39, 66, 65, 57, 50, 43, 42, 32,
-	59, 34, 47, 24, 51, 31, 46, 49, 37, 40,
-	4, 64, 48, 45, 48, 52, 41, 44, 30, 26,
-	27, 28, 19, 3, 23, 22, 21, 56, 20, 5,
-	58, 25, 18, 2, 1, 53, 29,
+	40, 6, 38, 11, 62, 63, 12, 13, 14, 15,
+	16, 17, 18, 8, 56, 9, 10, 65, 35, 57,
+	37, 64, 7, 41, 68, 67, 59, 52, 45, 44,
+	61, 34, 49, 36, 25, 53, 48, 33, 51, 39,
+	42, 4, 66, 50, 47, 50, 46, 54, 43, 32,
+	27, 28, 29, 30, 20, 3, 24, 23, 22, 58,
+	21, 5, 60, 26, 19, 2, 1, 55, 31,
 }
 var yyPact = []int{
 
-	-1000, -1000, 36, -3, -1000, -1000, -1000, -1000, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 11,
-	33, -1000, 34, 34, -1000, 33, -1000, -1000, -1000, 6,
-	-1000, -1000, -1000, -1000, -1000, -1000, 20, -1000, 25, 32,
-	4, 32, 18, -1000, -1000, -9, -1000, -1000, -1000, 3,
-	-1000, -1000, 23, -21, -1000, -1000, -4, -1000, -8, -1000,
-	-1000, 2, -1000, -1000, 0, -1000, -1000,
+	-1000, -1000, 37, -3, -1000, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	12, 34, -1000, 35, 35, -1000, 34, -1000, -1000, -1000,
+	-1000, 6, -1000, -1000, -1000, -1000, -1000, -1000, 19, -1000,
+	25, 33, 4, 33, 18, -1000, -1000, -9, -1000, -1000,
+	-1000, 3, -1000, -1000, 23, -22, -1000, -1000, -4, -1000,
+	-8, -1000, -1000, 2, -1000, -1000, 0, -1000, -1000,
 }
 var yyPgo = []int{
 
-	0, 0, 66, 33, 22, 65, 64, 63, 62, 2,
-	61, 60, 59, 58, 57, 56, 55, 54, 53, 52,
-	48, 47, 43, 41,
+	0, 0, 68, 34, 23, 67, 66, 65, 64, 2,
+	63, 62, 61, 60, 59, 58, 57, 56, 55, 54,
+	49, 46, 44, 42,
 }
 var yyR1 = []int{
 
 	0, 6, 8, 6, 9, 9, 10, 11, 3, 12,
 	13, 14, 12, 12, 12, 15, 12, 16, 12, 17,
-	12, 12, 12, 12, 12, 18, 18, 7, 20, 20,
-	21, 20, 20, 22, 23, 20, 19, 19, 4, 4,
-	5, 5, 5, 2, 2, 1, 1,
+	12, 12, 12, 12, 12, 12, 18, 18, 7, 20,
+	20, 21, 20, 20, 22, 23, 20, 19, 19, 4,
+	4, 5, 5, 5, 2, 2, 1, 1,
 }
 var yyR2 = []int{
 
 	0, 1, 0, 4, 0, 1, 0, 0, 5, 1,
 	0, 0, 6, 1, 1, 0, 4, 0, 3, 0,
-	3, 2, 2, 2, 2, 0, 2, 3, 1, 1,
-	0, 4, 1, 0, 0, 6, 0, 2, 2, 3,
-	1, 3, 1, 0, 2, 0, 2,
+	3, 2, 2, 2, 2, 2, 0, 2, 3, 1,
+	1, 0, 4, 1, 0, 0, 6, 0, 2, 2,
+	3, 1, 3, 1, 0, 2, 0, 2,
 }
 var yyChk = []int{
 
-	-1000, -6, -7, -18, 4, -12, 4, 24, 15, 17,
-	18, 6, 9, 10, 11, 12, 13, 14, -8, -19,
-	-13, -15, -16, -17, -3, -10, -3, -3, -3, -2,
-	-20, 24, 18, 6, 20, 8, -9, 5, -1, -4,
-	5, -4, -9, 21, -21, -22, 16, 7, 19, 5,
-	22, 16, -1, -5, 22, 27, -14, 22, -11, 7,
-	25, 26, 24, 24, -23, 22, 23,
+	-1000, -6, -7, -18, 4, -12, 4, 25, 16, 18,
+	19, 6, 9, 10, 11, 12, 13, 14, 15, -8,
+	-19, -13, -15, -16, -17, -3, -10, -3, -3, -3,
+	-3, -2, -20, 25, 19, 6, 21, 8, -9, 5,
+	-1, -4, 5, -4, -9, 22, -21, -22, 17, 7,
+	20, 5, 23, 17, -1, -5, 23, 28, -14, 23,
+	-11, 7, 26, 27, 25, 25, -23, 23, 24,
 }
 var yyDef = []int{
 
-	25, -2, 1, 0, 2, 26, 36, 9, 10, 13,
-	14, 15, 17, 19, 6, 6, 6, 6, 43, 27,
-	4, 45, 0, 0, 21, 4, 22, 23, 24, 3,
-	37, 28, 29, 30, 32, 33, 0, 5, 0, 18,
-	0, 20, 0, 44, 45, 0, 11, 16, 46, 0,
-	38, 7, 0, 0, 40, 42, 0, 39, 0, 31,
-	34, 0, 12, 8, 0, 41, 35,
+	26, -2, 1, 0, 2, 27, 37, 9, 10, 13,
+	14, 15, 17, 19, 6, 6, 6, 6, 6, 44,
+	28, 4, 46, 0, 0, 21, 4, 22, 23, 24,
+	25, 3, 38, 29, 30, 31, 33, 34, 0, 5,
+	0, 18, 0, 20, 0, 45, 46, 0, 11, 16,
+	47, 0, 39, 7, 0, 0, 41, 43, 0, 40,
+	0, 32, 35, 0, 12, 8, 0, 42, 36,
 }
 var yyTok1 = []int{
 
 	1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	24, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	25, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 27, 3, 26, 3, 3, 3, 3, 3,
+	3, 3, 28, 3, 27, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 25,
+	3, 3, 26,
 }
 var yyTok2 = []int{
 
 	2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 	12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-	22, 23,
+	22, 23, 24,
 }
 var yyTok3 = []int{
 	0,
 }
+
+//line yaccpar:1
 
 /*	parser for yacc output	*/
 
@@ -179,12 +192,13 @@ type yyLexer interface {
 const yyFlag = -1000
 
 func yyTokname(c int) string {
-	if c > 0 && c <= len(yyToknames) {
-		if yyToknames[c-1] != "" {
-			return yyToknames[c-1]
+	// 4 is TOKSTART above
+	if c >= 4 && c-4 < len(yyToknames) {
+		if yyToknames[c-4] != "" {
+			return yyToknames[c-4]
 		}
 	}
-	return fmt.Sprintf("tok-%v", c)
+	return __yyfmt__.Sprintf("tok-%v", c)
 }
 
 func yyStatname(s int) string {
@@ -193,7 +207,7 @@ func yyStatname(s int) string {
 			return yyStatenames[s]
 		}
 	}
-	return fmt.Sprintf("state-%v", s)
+	return __yyfmt__.Sprintf("state-%v", s)
 }
 
 func yylex1(lex yyLexer, lval *yySymType) int {
@@ -226,7 +240,7 @@ out:
 		c = yyTok2[1] /* unknown char */
 	}
 	if yyDebug >= 3 {
-		fmt.Printf("lex %U %s\n", uint(char), yyTokname(c))
+		__yyfmt__.Printf("lex %s(%d)\n", yyTokname(c), uint(char))
 	}
 	return c
 }
@@ -253,7 +267,7 @@ ret1:
 yystack:
 	/* put a state and value onto the stack */
 	if yyDebug >= 4 {
-		fmt.Printf("char %v in %v\n", yyTokname(yychar), yyStatname(yystate))
+		__yyfmt__.Printf("char %v in %v\n", yyTokname(yychar), yyStatname(yystate))
 	}
 
 	yyp++
@@ -322,8 +336,8 @@ yydefault:
 			yylex.Error("syntax error")
 			Nerrs++
 			if yyDebug >= 1 {
-				fmt.Printf("%s", yyStatname(yystate))
-				fmt.Printf("saw %s\n", yyTokname(yychar))
+				__yyfmt__.Printf("%s", yyStatname(yystate))
+				__yyfmt__.Printf(" saw %s\n", yyTokname(yychar))
 			}
 			fallthrough
 
@@ -342,7 +356,7 @@ yydefault:
 
 				/* the current p has no shift on "error", pop stack */
 				if yyDebug >= 2 {
-					fmt.Printf("error recovery pops state %d\n", yyS[yyp].yys)
+					__yyfmt__.Printf("error recovery pops state %d\n", yyS[yyp].yys)
 				}
 				yyp--
 			}
@@ -351,7 +365,7 @@ yydefault:
 
 		case 3: /* no shift yet; clobber input char */
 			if yyDebug >= 2 {
-				fmt.Printf("error recovery discards %s\n", yyTokname(yychar))
+				__yyfmt__.Printf("error recovery discards %s\n", yyTokname(yychar))
 			}
 			if yychar == yyEofCode {
 				goto ret1
@@ -363,7 +377,7 @@ yydefault:
 
 	/* reduction by production yyn */
 	if yyDebug >= 2 {
-		fmt.Printf("reduce %v in:\n\t%v\n", yyn, yyStatname(yystate))
+		__yyfmt__.Printf("reduce %v in:\n\t%v\n", yyn, yyStatname(yystate))
 	}
 
 	yynt := yyn
@@ -390,38 +404,38 @@ yydefault:
 	switch yynt {
 
 	case 2:
-
+		//line parser.y:78
 		{
 			sc(yylex).Begin(_USER)
 		}
 	case 3:
-
+		//line parser.y:82
 		{
 			usrCode = yyS[yypt-0].str
 		}
 	case 6:
-
+		//line parser.y:92
 		{
 			sc(yylex).PushState(_DEF_NAME)
 		}
 	case 7:
-
+		//line parser.y:97
 		{
 			sc(yylex).PopState()
 		}
 	case 8:
-
+		//line parser.y:101
 		{
 			yyVAL.str = yyS[yypt-2].str
 		}
 	case 10:
-
+		//line parser.y:108
 		{
 			defNamePos0 = sc(yylex).TokenStart()
 			sc(yylex).PushState(_DEF_NAME)
 		}
 	case 11:
-
+		//line parser.y:114
 		{
 			if _, ok := defs[yyS[yypt-3].str]; ok {
 				logErr(fmt.Sprintf("%s:%q redefined", defNamePos0, yyS[yypt-3].str))
@@ -432,44 +446,44 @@ yydefault:
 			sc(yylex).PopState()
 		}
 	case 13:
-
+		//line parser.y:125
 		{
 			defCode = append(defCode, yyS[yypt-0].str+"\n")
 		}
 	case 14:
-
+		//line parser.y:129
 		{
 			defCode = append(defCode, yyS[yypt-0].str+"\n")
 		}
 	case 15:
-
+		//line parser.y:133
 		{
 			sc(yylex).PushState(_VERBATIM)
 		}
 	case 16:
-
+		//line parser.y:138
 		{
 			defCode = append(defCode, yyS[yypt-1].str+"\n")
 			sc(yylex).PopState()
 		}
 	case 17:
-
+		//line parser.y:143
 		{
 			sc(yylex).PushState(_DEF_STARTS)
 		}
 	case 18:
-
+		//line parser.y:147
 		{
 			sStarts = append(sStarts, yyS[yypt-0].strs...)
 			sc(yylex).PopState()
 		}
 	case 19:
-
+		//line parser.y:152
 		{
 			sc(yylex).PushState(_DEF_STARTS)
 		}
 	case 20:
-
+		//line parser.y:156
 		{
 			xStarts = append(xStarts, yyS[yypt-0].strs...)
 			for _, start := range yyS[yypt-0].strs {
@@ -478,27 +492,32 @@ yydefault:
 			sc(yylex).PopState()
 		}
 	case 21:
-
+		//line parser.y:165
 		{
 			_yyt = yyS[yypt-0].str
 		}
 	case 22:
-
+		//line parser.y:170
 		{
 			_yyb = yyS[yypt-0].str
 		}
 	case 23:
-
+		//line parser.y:175
 		{
 			_yyc = yyS[yypt-0].str
 		}
 	case 24:
-
+		//line parser.y:180
 		{
 			_yyn = yyS[yypt-0].str
 		}
-	case 27:
-
+	case 25:
+		//line parser.y:185
+		{
+			_yym = yyS[yypt-0].str
+		}
+	case 28:
+		//line parser.y:198
 		{
 			for s := range unrefStarts {
 				logErr(fmt.Sprintf("%s:start condition %q declared and not used", sc(yylex).TokenStart(), s))
@@ -507,63 +526,55 @@ yydefault:
 				logErr(fmt.Sprintf("%s:no rules defined", sc(yylex).TokenStart()))
 			}
 		}
-	case 29:
-
+	case 30:
+		//line parser.y:211
 		{
 			moreAction(yyS[yypt-0].str)
 		}
-	case 30:
-
+	case 31:
+		//line parser.y:215
 		{
 			sc(yylex).PushState(_VERBATIM)
 		}
-	case 31:
-
+	case 32:
+		//line parser.y:220
 		{
 			moreAction(yyS[yypt-1].str)
 			sc(yylex).PopState()
 		}
-	case 32:
-
+	case 33:
+		//line parser.y:225
 		{
 			rulePos = append(rulePos, sc(yylex).TokenStart())
 			pat, re, action, bol, eol := parsePattern(sc(yylex).TokenStart(), yyS[yypt-0].str, map[string]bool{})
 			unreachableRules[len(rules)] = true
 			rules = append(rules, rule{nil, pat, re, action, nil, nil, bol, eol})
 		}
-	case 33:
-
+	case 34:
+		//line parser.y:232
 		{
 			sc(yylex).PushState(_STARTS)
 		}
-	case 34:
-
+	case 35:
+		//line parser.y:237
 		{
 			sc(yylex).PopState()
 		}
-	case 35:
-
+	case 36:
+		//line parser.y:241
 		{
 			rulePos = append(rulePos, sc(yylex).TokenStart())
 			pat, re, action, bol, eol := parsePattern(sc(yylex).TokenStart(), yyS[yypt-0].str, map[string]bool{})
 			unreachableRules[len(rules)] = true
 			rules = append(rules, rule{yyS[yypt-3].strs, pat, re, action, nil, nil, bol, eol})
 		}
-	case 36:
-
+	case 37:
+		//line parser.y:250
 		{
 			sc(yylex).PushState(_RULES)
 		}
-	case 38:
-
-		{
-			if !addStartSet(yyS[yypt-0].str) {
-				logErr(fmt.Sprintf("%s:start condition %q redeclared", sc(yylex).TokenStart(), yyS[yypt-0].str))
-			}
-			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
-		}
 	case 39:
-
+		//line parser.y:258
 		{
 			if !addStartSet(yyS[yypt-0].str) {
 				logErr(fmt.Sprintf("%s:start condition %q redeclared", sc(yylex).TokenStart(), yyS[yypt-0].str))
@@ -571,16 +582,15 @@ yydefault:
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 40:
-
+		//line parser.y:265
 		{
-			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
-				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
+			if !addStartSet(yyS[yypt-0].str) {
+				logErr(fmt.Sprintf("%s:start condition %q redeclared", sc(yylex).TokenStart(), yyS[yypt-0].str))
 			}
-			delete(unrefStarts, yyS[yypt-0].str)
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 41:
-
+		//line parser.y:275
 		{
 			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
 				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
@@ -589,27 +599,36 @@ yydefault:
 			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
 		}
 	case 42:
-
+		//line parser.y:283
+		{
+			if _, ok := defStarts[yyS[yypt-0].str]; !ok {
+				logErr(fmt.Sprintf("%s:start condition %q undefined", sc(yylex).TokenStart(), yyS[yypt-0].str))
+			}
+			delete(unrefStarts, yyS[yypt-0].str)
+			yyVAL.strs = append(yyVAL.strs, yyS[yypt-0].str)
+		}
+	case 43:
+		//line parser.y:291
 		{
 			yyVAL.strs = append(yyVAL.strs, "*")
 		}
-	case 43:
-
+	case 44:
+		//line parser.y:297
 		{
 			yyVAL.str = ""
 		}
-	case 44:
-
+	case 45:
+		//line parser.y:301
 		{
 			yyVAL.str += yyS[yypt-0].str
 		}
-	case 45:
-
+	case 46:
+		//line parser.y:307
 		{
 			yyVAL.str = ""
 		}
-	case 46:
-
+	case 47:
+		//line parser.y:311
 		{
 			yyVAL.str += yyS[yypt-0].str
 		}

@@ -7,6 +7,9 @@ package lex
 import (
 	"bytes"
 	"flag"
+	"fmt"
+	"path"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -17,6 +20,35 @@ func init() {
 	hook = true
 	trace = flag.Bool("trace", false, "allow test runtime error stack traces")
 }
+
+func caller(s string, va ...interface{}) {
+	_, fn, fl, _ := runtime.Caller(2)
+	fmt.Printf("caller: %s:%d: ", path.Base(fn), fl)
+	fmt.Printf(s, va...)
+	fmt.Println()
+	_, fn, fl, _ = runtime.Caller(1)
+	fmt.Printf("\tcallee: %s:%d: ", path.Base(fn), fl)
+	fmt.Println()
+}
+
+func dbg(s string, va ...interface{}) {
+	if s == "" {
+		s = strings.Repeat("%v ", len(va))
+	}
+	_, fn, fl, _ := runtime.Caller(1)
+	fmt.Printf("dbg %s:%d: ", path.Base(fn), fl)
+	fmt.Printf(s, va...)
+	fmt.Println()
+}
+
+func TODO(...interface{}) string {
+	_, fn, fl, _ := runtime.Caller(1)
+	return fmt.Sprintf("TODO: %s:%d:\n", path.Base(fn), fl)
+}
+
+func use(...interface{}) {}
+
+// ============================================================================
 
 func TestLineSeparators(t *testing.T) {
 	const text = `
@@ -61,6 +93,7 @@ func (y yylexer) Error(e string) {
 
 func (y *yylexer) Lex(lval *yySymType) int {
     var err error
+    var mark int
     c := y.current
     if y.empty {
         c, y.empty = y.getc(), false
@@ -69,6 +102,7 @@ func (y *yylexer) Lex(lval *yySymType) int {
 
 %yyc c
 %yyn c = y.getc()
+%yym mark = len(y.buf)
 
 D  [0-9]+
 E  [eE][-+]?{D}
