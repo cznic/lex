@@ -56,7 +56,7 @@ func init() {
 		[][]int{
 			// _DEF
 			{tDEF_NAME, tUNINDENTED_COMMENT, tINDENTED_TEXT, tVERBATIM_OPEN, tSECTION_DIV,
-				tSSTART, tXSTART, tYYT, tYYB, tYYC, tYYN, tYYM},
+				tSSTART, tXSTART, tYYT, tYYB, tYYC, tYYN, tYYM, tOPTION},
 			// _DEF_NAME
 			{tBLANKS, tDEFINITION},
 			// _DEF_STARTS
@@ -92,6 +92,7 @@ func init() {
 			`/^%yyc/`:                   tYYC,
 			`/^%yyn/`:                   tYYN,
 			`/^%yym/`:                   tYYM,
+			`/^%option.*/`:              tOPTION,
 		},
 		"",
 		"",

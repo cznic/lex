@@ -119,6 +119,7 @@ var (
 	_yym             = "yym"
 	nodfaopt         bool
 	bits32           bool // enables unicode rune processing, standard is byte
+	caseless         bool
 )
 
 func logErr(s string) {

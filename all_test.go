@@ -103,6 +103,7 @@ func (y *yylexer) Lex(lval *yySymType) int {
 %yyc c
 %yyn c = y.getc()
 %yym mark = len(y.buf)
+%option case-insensitive
 
 D  [0-9]+
 E  [eE][-+]?{D}

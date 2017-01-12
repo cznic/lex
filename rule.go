@@ -20,6 +20,20 @@ var (
 	nameNext  = &unicode.RangeTable{R16: []unicode.Range16{{'-', '-', 1}, {'0', '9', 1}, {'A', 'Z', 1}, {'_', '_', 1}, {'a', 'z', 1}}}
 )
 
+func cased(r rune) string {
+	switch {
+	case caseless:
+		switch {
+		case r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z':
+			return fmt.Sprintf("(%c|%c)", r, r^' ')
+		default:
+			return fmt.Sprintf("%c", r)
+		}
+	default:
+		return fmt.Sprintf("%c", r)
+	}
+}
+
 func parsePattern(pos token.Position, src string, stack map[string]bool) (pattern, re, action string, bol, eol bool) {
 	p := &pat{src: src, re: bytes.NewBuffer(nil), stack: stack}
 
@@ -129,7 +143,7 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 	ok = true
 	switch b := p.current(); b {
 	default:
-		p.re.WriteRune(b)
+		p.re.WriteString(cased(b))
 		p.move()
 	case '$':
 		p.move()
@@ -258,7 +272,7 @@ func (p *pat) parseTerm(nest int) (ok bool) {
 		for {
 			switch b := p.current(); b {
 			default:
-				lit += string(b)
+				lit += cased(b)
 				p.move()
 			case 0, '\n', '\r':
 				panic(fmt.Errorf("unterminated quoted pattern"))
