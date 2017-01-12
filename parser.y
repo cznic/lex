@@ -12,6 +12,8 @@ package lex
 
 import (
 	"fmt"
+	"strings"
+
 	"go/token"
 )
 
@@ -43,6 +45,7 @@ var	(
 	tYYC
 	tYYN
 	tYYM
+	tOPTION
 
 
 %token <str>
@@ -184,6 +187,15 @@ def_section_item:
 	def_body
 	{
 		_yym = $2
+	}
+|	tOPTION
+	{
+		switch s := strings.TrimSpace($<str>1[len("%option"):]); s {
+		case "case-insensitive":
+			caseless = true
+		default:
+			logErr(fmt.Sprintf("%s: unknown %%option %q", sc(yylex).TokenStart(), s))
+		}
 	}
 
 
